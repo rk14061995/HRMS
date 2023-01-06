@@ -3,7 +3,7 @@
            <div class="col">
                <div class="footer">
                    <p>Copyright © 2022 Designed by Html.Design. All rights reserved.<br><br>
-                       Developed By: <a href="https://greenusys.com/" style="color:blue;">Greenusys Technology</a>
+                       Developed By: <a href="https://HK.com/" style="color:blue;">HK Technology</a>
                    </p>
                </div>
            </div>
