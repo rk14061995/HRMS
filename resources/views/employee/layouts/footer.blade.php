@@ -1,11 +1,7 @@
    <div class="container-fluid">
        <div class="row">
            <div class="col">
-               <div class="footer">
-                   <p>Copyright © 2022 Designed by Html.Design. All rights reserved.<br><br>
-                       Developed By: <a href="https://HK.com/" style="color:blue;">HK Technology</a>
-                   </p>
-               </div>
+               
            </div>
        </div>
 
@@ -51,6 +47,9 @@
             CKEDITOR.replace( '_formBody' );
     </script>
    <script>
+    $('#sidebarCollapse').on('click', function () {
+        $('#sidebar').toggleClass('active');
+    });
         function printDiv() 
         {
 
@@ -69,11 +68,69 @@
         // setTimeout(function(){newWin.close();},10);
 
         }
+        function printPdf(container) 
+        {
+
+        var divToPrint=document.getElementById(container);
+
+        var newWin=window.open('','Print-Window');
+
+        newWin.document.open();
+        
+        var html='<html><head><link rel="stylesheet" href="http://127.0.0.1:8000/frontend/css/bootstrap.min.css" /><style>@media print {.pagebreak { page-break-before: always; } /* page-break-after works, as well */}</style></head><body onload="window.print()">'+divToPrint.innerHTML+'</body></html>';
+        // console.log(html);
+        newWin.document.write(html);
+
+        newWin.document.close();
+
+        // setTimeout(function(){newWin.close();},10);
+
+        }
+
+        
        //OnChange Logics Starts
 
        $(document).on('change', '#empCheckoutID', function() {
            $('#attendId').val($(this).val());
        });
+       $(document).on('change', '#onModeChange', function() {
+           console.log($(this).is(':checked'));
+           if($(this).is(':checked')){
+            $('#sidebar h4').css("background-color",'#149b6a');
+            $('#sidebar').css("background-color",'#1c6148');
+            $('.topbar').css('background-color','#149b6a');
+            $('.card').css('background-color','#fff');
+            $('.card-body').css('background-color','#fff');
+            
+            $('.topbar .navbar').css('background-color','#149b6a');
+            $('.sidebar_toggle').css('background-color','#149b6a');
+            $('.icon_info ul.user_profile_dd>li').css('background-color','#149b6a');
+           }else{
+            $('#sidebar h4').css("background-color",'#17202A');
+            $('#sidebar').css("background-color",'#273746');
+            
+            $('#content').css("background-color",'#625d5d');
+            $('.card').css('background-color','#17202A');
+            $('.card-body').css('background-color','#17202A');
+            $('.topbar').css('background-color','#17202A');
+            $('.topbar .navbar').css('background-color','#17202A');
+            $('.sidebar_toggle').css('background-color','#17202A');
+            $('.icon_info ul.user_profile_dd>li').css('background-color','#17202A');
+            
+           }
+        //    $('#sidebar h4').css('background-color','red');
+        // $('.topbar .navbar').css('background-color','red');
+        // $('.sidebar_toggle').css('background-color','red');
+        // $('.icon_info ul.user_profile_dd>li').css('background-color',);
+        // $('#sidebar').css('background-color',);
+        // $('#sidebar').css('background-color',);
+        // $('#sidebar').css('background-color',);
+
+
+        //    #sidebar h4 .topbar .navbar .sidebar_toggle .icon_info ul.user_profile_dd>li {
+
+       });
+       
        $(document).on('change', '#empIdForBankDetail', function() {
            var EmpId = $(this).val();
            $.ajax({
@@ -180,6 +237,28 @@
            
            $('.empSearch').select2();
        });
+       $(document).on('click','#generateEmpSalary',function(){
+        $.ajax({
+               url: "generate-salary", // Upload Script
+               headers: {
+                   'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+               },// Setting the data attribute of ajax with file_data
+               type: 'get',
+               success: function(res) {
+
+                   if (res.status) {
+                       swal(res.message, {
+                           icon: "success",
+                       });
+                   } else {
+                       swal(res.message, {
+                           icon: "warning",
+                       });
+                   }
+                
+               }
+           });
+       });
        $(document).on('click', '#markMyAttendance', function() {
            console.log('Mark My Attendance');
            var user_id = '{{ Auth::user()->id }}';
@@ -250,13 +329,33 @@
             // var empId=$(this).attr('data-empid');
            $('#ltcModalDocList').modal('show');
        });
-       $(document).on('click', '.editEmpClaimReq', function() {
+       $(document).on('click', '.viewEmpClaimReq', function() {
            $('#ClaimRequestModal').modal('show');
+            var patient_name=$(this).attr('data-ptnt');
+            var emp_name=$(this).attr('data-emp-name');
+            var emp_id=$(this).attr('data-empid');
+            var req_id=$(this).attr('data-id');
+            var clm_amt=$(this).attr('data-amount');
+            var doc=$(this).attr('data-doc-path')
+
+            $('#empId').text(emp_id);
+            $('#empName').text(emp_name);
+            $('#emppntName').text(patient_name);
+            $('#clmAmt').text(clm_amt);
+            $('#claimedamt').val(clm_amt);
+            $('#claimedreqid').val(req_id);
+            
        });
        $(document).on('click', '.editLtcEmpClaimReq', function() {
            $('#LtcClaimRequestModal').modal('show');
        });
        $(document).on('click', '#claimAmount', function() {
+            $('#empCLmId').text($('#empId').text());
+            $('#clmdamount').val($('#claimedamt').val());
+            $('#clmReqId').val($('#claimedreqid').val());
+            
+
+
            $('#ClaimRequestModal').modal('hide');
            $('#ClaimRequestAmountModal').modal('show');
        });
@@ -353,7 +452,128 @@
             } 
         });
        //Salary Calculation Ends Here
+       
+       $(document).on('submit', '#approveMedicalClaim', function(e) {
+           e.preventDefault();
+           var formData = new FormData($(this)[0]);
+           $.ajax({
+               url: "approveMedicalClaim", // Upload Script
+               headers: {
+                   'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+               },
+               data: formData, // Setting the data attribute of ajax with file_data
+               type: 'post',
+               processData: false,
+               cache: false,
+               contentType: false,
+               success: function(res) {
+                   if (res.status) {
+                       swal(res.message, {
+                           icon: "success",
+                       });
+                   } else {
+                       swal(res.message, {
+                           icon: "warning",
+                       });
+                   }
+                   setTimeout(() => {
+                    location.reload();
+                   }, 1500);
 
+               }
+           });
+       });
+       
+       $(document).on('submit', '#add-financial-year', function(e) {
+           e.preventDefault();
+           var formData = new FormData($(this)[0]);
+           $.ajax({
+               url: "addNewFinancialYear", // Upload Script
+               headers: {
+                   'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+               },
+               data: formData, // Setting the data attribute of ajax with file_data
+               type: 'post',
+               processData: false,
+               cache: false,
+               contentType: false,
+               success: function(res) {
+                   if (res.status) {
+                       swal(res.message, {
+                           icon: "success",
+                       });
+                   } else {
+                       swal(res.message, {
+                           icon: "warning",
+                       });
+                   }
+                   setTimeout(() => {
+                    location.reload();
+                   }, 1500);
+
+               }
+           });
+       });
+       $(document).on('submit', '#add-new-leave-category', function(e) {
+           e.preventDefault();
+           var formData = new FormData($(this)[0]);
+           $.ajax({
+               url: "addLeaveCategory", // Upload Script
+               headers: {
+                   'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+               },
+               data: formData, // Setting the data attribute of ajax with file_data
+               type: 'post',
+               processData: false,
+               cache: false,
+               contentType: false,
+               success: function(res) {
+                   if (res.status) {
+                       swal(res.message, {
+                           icon: "success",
+                       });
+                   } else {
+                       swal(res.message, {
+                           icon: "warning",
+                       });
+                   }
+                   setTimeout(() => {
+                    location.reload();
+                   }, 1500);
+
+               }
+           });
+       });
+       $(document).on('submit', '#add-emp-sal-deduction', function(e) {
+           e.preventDefault();
+           var formData = new FormData($(this)[0]);
+           $.ajax({
+               url: "addEmpDeductions", // Upload Script
+               headers: {
+                   'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+               },
+               data: formData, // Setting the data attribute of ajax with file_data
+               type: 'post',
+               processData: false,
+               cache: false,
+               contentType: false,
+               success: function(res) {
+                   if (res.status) {
+                       swal(res.message, {
+                           icon: "success",
+                       });
+                   } else {
+                       swal(res.message, {
+                           icon: "warning",
+                       });
+                   }
+                   setTimeout(() => {
+                    location.reload();
+                   }, 1500);
+
+               }
+           });
+       });
        $(document).on('submit', '#add-new-emp-form', function(e) {
            e.preventDefault();
            var formData = new FormData($(this)[0]);
@@ -792,6 +1012,8 @@
                }
            });
        });
+
+
        //Delete Common API 
        $(document).on('click', '.deleteEmpAttendanceData', function() {
            var id = $(this).attr('data-id');
@@ -883,6 +1105,73 @@
 
            $(this).parent().parent().remove();
        });
+
+    //   changes aditya
+       
+
+var selDiv = "";
+      var storedFiles = [];
+      $(document).ready(function () {
+        $("#img").on("change", handleFileSelect);
+        selDiv = $("#dd");
+      });
+
+      function handleFileSelect(e) {
+        var files = e.target.files;
+        var filesArr = Array.prototype.slice.call(files);
+        filesArr.forEach(function (f) {
+          if (!f.type.match("image.*")) {
+            return;
+          }
+          storedFiles.push(f);
+
+          var reader = new FileReader();
+          reader.onload = function (e) {
+            var html =
+              '<img src="' +
+              e.target.result +
+              "\" data-file='" +
+              f.name +
+              "alt='Category Image' height='100px' width='200px'>";
+            selDiv.html(html);
+          };
+          reader.readAsDataURL(f);
+        });
+      }
+
+ var selDivs = "";
+      var storedFiless = [];
+      $(document).ready(function () {
+        $("#img1").on("change", handleFileSelectt);
+        selDivs = $("#ff");
+      });
+
+      function handleFileSelectt(e) {
+        var files = e.target.files;
+        var filesArrr = Array.prototype.slice.call(files);
+        filesArrr.forEach(function (f) {
+          if (!f.type.match("image.*")) {
+            return;
+          }
+          storedFiless.push(f);
+
+          var readers = new FileReader();
+          readers.onload = function (e) {
+            var htmll =
+              '<img src="' +
+              e.target.result +
+              "\" data-file='" +
+              f.name +
+              "alt='Category Image' height='100px' width='200px'>";
+            selDivs.html(htmll);
+          };
+          readers.readAsDataURL(f);
+        });
+      }
+    
+
+
+
    </script>
    <script src="frontend/js/popper.min.js"></script>
    <script src="frontend/js/bootstrap.min.js"></script>

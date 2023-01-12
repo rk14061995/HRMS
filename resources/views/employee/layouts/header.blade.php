@@ -46,7 +46,9 @@
         integrity="sha512-KVdV5HNnN1f6YOANbRuNxyCnqyPICKUmQusEkyeRg4X0p8K1xCdbHs32aA7pWo6WqMZk0wAzl29cItZh8oBPYQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="crossorigin="anonymous"></script>
     
     <script>
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
@@ -57,6 +59,7 @@
     <style>
         body {
             font-family: 'Times New Roman', Times, serif !important;
+            /* color:white; */
         }
 
         .form-control {
@@ -69,6 +72,68 @@
         .selection{
             width: 100% !important;
         }
+        /* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 52px;
+  height: 22px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #e3a2a2;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 14px;
+  width: 18px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
     </style>
 
 </head>
@@ -86,7 +151,7 @@
                         <li class="active">
                             <a href="#attendace" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"
                                 aria-controls="attendace"><i class="fa fa-sign-out" style="color:#808B96;"></i>
-                                <span>Attendace</span></a>
+                                <span>Attendance</span></a>
                             <ul class="collapse list-unstyled" id="attendace">
                                 <li>
                                     <a href="{{ route('empattendancelist') }}"> <i class="fa fa-list"
@@ -94,26 +159,48 @@
                                 </li>
                             </ul>
                         </li>
-                        
-                        <li>
+                        <li class="active">
+                            <a href="#Finance" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"
+                                aria-controls="Finance"><i class="fa fa-sign-out" style="color:#808B96;"></i>
+                                <span>Financial Year</span></a>
+                            <ul class="collapse list-unstyled" id="Finance">
+                                <li>
+                                    <a href="{{ route('financial-year') }}"> <i class="fa fa-list"
+                                            style="color:#808B96;"></i><span>Financial Year</span></a>
+                                </li>
+                            </ul>
+                        </li>
+   
+                        <li >
+                                    <a href="{{ route('empdeduction') }}"><i class="fa fa-file-text-o"
+                                        style="color:#808B96;"></i>
+                                    <span>Employee Education</span></a>
+                                </li>
+                         <li>
                             <a href="#SalaraySlip" data-toggle="collapse" aria-expanded="false"
                                 class="dropdown-toggle" aria-controls="SalaraySlip"><i class="fa fa-book"
                                     style="color:#808B96;"></i>
                                 <span>Salaray Slip</span></a>
                             <ul class="collapse list-unstyled" id="SalaraySlip">
-                                <li>
+                                <li class="d-none">
                                     <a href="{{ route('empsalslip') }}"><i class="fa fa-file-text-o"
                                         style="color:#808B96;"></i>
                                     <span>Deductions</span></a>
                                 </li>
-                                <li>
+                                {{-- <li>
                                     <a href="{{ route('empsalslip') }}"><i class="fa fa-file-text-o"
                                         style="color:#808B96;"></i>
                                     <span>Salaray Slip</span></a>
-                                </li>
+                                </li> --}}
+                                
                                 <li>
                                     <a href="{{ route('grade-salary') }}"> <i class="fa fa-list"
-                                            style="color:#808B96;"></i><span>Grade</span></a>
+                                            style="color:#808B96;"></i><span>Grade & Deductions</span></a>
+                                </li>
+                                <li class="d-none">
+                                    <a href="{{ route('empsalslip') }}"><i class="fa fa-file-text-o"
+                                        style="color:#808B96;"></i>
+                                    <span>PAY REQUISITION</span></a>
                                 </li>
                                 <li>
                                     <a href="{{ route('empsalslipcreation') }}"><i class="fa fa-file-pdf-o"
@@ -159,7 +246,10 @@
                                     <a href="{{ route('empleavelist') }}"><i class="fa fa-list"
                                             style="color:#808B96;"></i><span>Leave History</span></a>
                                 </li>
-
+                                <li>
+                                    <a href="{{ route('empshowdata') }}"><i class="fa fa-list"
+                                            style="color:#808B96;"></i><span>Employee All Detalis</span></a>
+                                </li>
 
                             </ul>
                         </li>
@@ -366,8 +456,14 @@
                                         <!-- <a href="index.html"><img class="img-responsive" src="images/logo/logo.png" alt="#" /></a> -->
                                     </div>
                                 </div>
-                                <div class="col-md-5 pt-2">
-                                    
+                                <div class="col-md-5 pt-4 text-right">
+                                    <!-- Rounded switch -->
+                                    {{-- Dark Mode --}}
+                                    <label class="switch d-none">
+                                        <input type="checkbox" id="onModeChange" value="1">
+                                        <span class="slider round"></span>
+                                    </label>
+                                    {{-- Light  --}}
                                 </div>
                                 <div class="col-md-3">
                                     <div class="right_topbar">

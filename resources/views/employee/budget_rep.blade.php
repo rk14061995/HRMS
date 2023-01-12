@@ -299,7 +299,7 @@
                                                                                     <td>Pay of Non Gazetted Stall + Grade
                                                                                         pay
                                                                                     </td>
-                                                                                    <td>211545624</td>
+                                                                                    <td>{{$transation['GRADE_PAY']}}</td>
                                                                                     <td>121454045</td>
                                                                                 </tr>
                                                                                 <tr>
@@ -322,7 +322,7 @@
                                                                                 <tr>
                                                                                     <td>4.</td>
                                                                                     <td>Dearness allowance</td>
-                                                                                    <td>2372709</td>
+                                                                                    <td>{{$transation['DA']}}</td>
                                                                                     <td>8205137</td>
                                                                                 </tr>
 
@@ -330,7 +330,7 @@
                                                                                 <tr>
                                                                                     <td>5.</td>
                                                                                     <td>House Rent Allowance</td>
-                                                                                    <td>1397709</td>
+                                                                                    <td>{{$transation['HRA']}}</td>
                                                                                     <td>5372949</td>
                                                                                 </tr>
 
@@ -393,7 +393,7 @@
                                                                                         /Tuition Feer
                                                                                     </td>
                                                                                     <td>0</td>
-                                                                                    <td>648000</td>
+                                                                                    <td>{{$transation['CEA']}}</td>
                                                                                 </tr>
 
 
@@ -407,7 +407,7 @@
                                                                                 <tr>
                                                                                     <td>12.</td>
                                                                                     <td>(b)Leave Travel Concession(LTC)</td>
-                                                                                    <td>0</td>
+                                                                                    <td>{{$transation['LTC']}}</td>
                                                                                     <td>0</td>
                                                                                 </tr>
 
@@ -424,7 +424,7 @@
                                                                                     <td>14.</td>
                                                                                     <td>Re-imbursement of Medical Charges*
                                                                                     </td>
-                                                                                    <td>0</td>
+                                                                                    <td>{{$transation['MEDICAL']}}</td>
                                                                                     <td>0</td>
                                                                                 </tr>
 
@@ -857,7 +857,7 @@
                                                                                 <tr>
                                                                                     <td></td>
                                                                                     <td><b>Total </b></td>
-                                                                                    <td>135458527</td>
+                                                                                    <td>{{$transation['TOTAL']}}</td>
                                                                                     <td>674536585</td>
                                                                                 </tr>
 

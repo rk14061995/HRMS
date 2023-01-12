@@ -1,0 +1,15 @@
+table, th, td {
+    border:1px solid black;
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+
+ 
+.table-responsive{
+    max-height: 200px;
+    overflow: scroll;
+}

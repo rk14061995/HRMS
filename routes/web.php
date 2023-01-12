@@ -7,7 +7,7 @@ use App\Http\Controllers\RedirectController;
 use App\Http\Controllers\GeneratePdfController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AnnualBudgetReport;
-
+use App\Http\Controllers\SalaryGenStatusController;
 
 /*
 |--------------------------------------------------------------------------
@@ -96,6 +96,11 @@ Route::prefix('emp')->middleware(['auth'])->group(function(){
 
         
         Route::post('/addEmpJobDetails', [HomeController::class,'addEmpJobDetails'])->name('addEmpJobDetails');
+        Route::post('/addLeaveCategory', [HomeController::class,'addLeaveCategory'])->name('addLeaveCategory');
+
+       
+        Route::get('/financial-year', [HomeController::class,'financialYear'])->name('financial-year');
+        Route::post('/addNewFinancialYear', [HomeController::class,'addNewFinancialYear'])->name('addNewFinancialYear');
         //LTC
         Route::get('/empltcclaim', [HomeController::class,'apply_empltcclaim'])->name('empltcclaim');  
         Route::get('/view-claim-details{id}', [HomeController::class,'viewEmployeeClaimRequest'])->name('view-claim-details');
@@ -124,6 +129,7 @@ Route::prefix('emp')->middleware(['auth'])->group(function(){
         //Medical Claim Routes
         Route::get('/empmedicalclaim', [HomeController::class,'apply_empmedclaim'])->name('empmedicalclaim'); 
         Route::post('/claimMedicalBenifit', [HomeController::class,'claimMedicalBenifit'])->name('claimMedicalBenifit');
+        Route::post('/approveMedicalClaim', [HomeController::class,'approveMedicalClaim'])->name('approveMedicalClaim');
         Route::get('/view-medical-claim-form{id?}', [HomeController::class,'mdcl_claim_doc'])->name('view-medical-claim-form');
 
         //Unit Deatails
@@ -138,8 +144,11 @@ Route::prefix('emp')->middleware(['auth'])->group(function(){
         Route::get('/show-other-case-pension{id?}', [HomeController::class,'showOtherPensionForm'])->name('show-other-case-pension');
 
 
+        //Salary Routes
+        Route::post('/addEmpDeductions', [HomeController::class,'addEmpDeductions'])->name('addEmpDeductions');
         Route::get('/grade-salary', [HomeController::class,'gradeSalary'])->name('grade-salary'); 
-        Route::get('/empsalslip', [HomeController::class,'apply_empsalslip'])->name('empsalslip'); 
+        Route::get('/empsalslip', [HomeController::class,'apply_empsalslip'])->name('empsalslip');
+        Route::get('/generate-salary', [SalaryGenStatusController::class,'generateSalary'])->name('generate-salary');  
         
         Route::get('/empsalslipcreation', [HomeController::class,'generate_empsalslip'])->name('empsalslipcreation');
 
@@ -148,6 +157,7 @@ Route::prefix('emp')->middleware(['auth'])->group(function(){
 
         Route::get('/createEmpPage', [HomeController::class,'createEmpPage'])->name('createEmpPage');  
         Route::get('/employeDetails{id}', [HomeController::class,'employeDetails'])->name('employeDetails');
+        Route::post('/employeDetailsupdate/{id}', [HomeController::class,'employeDetailsupdate'])->name('employeDetailsupdate');
 
         Route::get('/employee-listing', [HomeController::class,'EmployeeList'])->name('employee-listing'); 
         Route::get('/employee-skills', [HomeController::class,'EmployeeSkillList'])->name('employee-skills');
@@ -167,7 +177,7 @@ Route::prefix('emp')->middleware(['auth'])->group(function(){
         Route::get('/softDeleteEmpBankDetails', [HomeController::class,'softDeleteEmpBankDetails'])->name('softDeleteEmpBankDetails');
         Route::post('/addEmpSkills', [HomeController::class,'addEmpSkills'])->name('addEmpSkills'); 
 
-        Route::post('/mstore', [HomeController::class,'addNewData'])->name('mstore');
+        //Route::post('/mstore', [HomeController::class,'addNewData'])->name('mstore');
 
         
         Route::get('/formUpload', [HomeController::class,'formUpload'])->name('formUpload');
@@ -178,5 +188,11 @@ Route::prefix('emp')->middleware(['auth'])->group(function(){
         //Budget Report
         Route::get('/Annual-Budget-Report', [AnnualBudgetReport::class,'index'])->name('Annual-Budget-Report'); 
 
+            // Aditya modifiy
 
+         Route::get('/empshowdata', [HomeController::class,'empshowdata'])->name('empshowdata'); 
+         Route::get('/empdeduction', [HomeController::class,'empdeduction'])->name('empdeduction'); 
+        Route::post('/empdeductionpost', [HomeController::class,'empdeductionpost'])->name('empdeductionpost');
+        // Aditya end for route
+       
 });

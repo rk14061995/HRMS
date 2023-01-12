@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use DB;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Session\Session;
 use App\Models\EmployeeAttendanceModel;
@@ -9,7 +9,11 @@ use App\Models\EmpLeaveModel;
 use App\Models\MedicalClaimModel;
 use App\Models\Manager\Employeedetails;
 use App\Models\RetirementRequestModel;
+use App\Models\EmpSalaryDeduction;
+use App\Models\LeaveCategory;
+use App\Models\FinancialYear;
 use App\Models\User;
+use App\Models\TransactionDetails;
 use App\Models\EmpBankDetailsModel;
 use App\Models\EmployeeSalary;
 use App\Models\DependentDetails;
@@ -23,6 +27,7 @@ use App\Models\UnitDetail;
 use App\Models\EmpRetRequest;
 use App\Models\EmpPensionRequest;
 use App\Models\EmployeeJobHistory;
+use App\Models\Empdeducation;
 // use App\Http\Controllers\Auth;
 use Illuminate\Support\Facades\Auth;
 
@@ -36,6 +41,7 @@ class HomeController extends Controller
    public function __construct()
    {
       $this->middleware('auth');
+
    }
    public function attendanceCheck()
    {
@@ -160,11 +166,21 @@ class HomeController extends Controller
       $data = EmployeeAttendanceModel::where('status', 1)->get();
       return view('employee/emp_leave', compact('data'));
    }
+   
+   public function financialYear(Request $req)
+   {
+
+      $data = FinancialYear::where('status', 1)->orderBy('financial_year','DESC')->get();
+      return view('employee/financial', compact('data'));
+   }
+
    public function apply_leave(Request $req)
    {
 
       $data = User::where('status', 1)->get();
-      return view('employee/emp_leaveapply', compact('data'));
+      $lvCategory=LeaveCategory::where('status',1)->get();
+      // print_r($data->toArray());die; 
+      return view('employee/emp_leaveapply', compact('data','lvCategory'));
    }
    public function apply_empret(Request $req)
    {
@@ -207,11 +223,15 @@ class HomeController extends Controller
 
 
       $Employees = User::where('status', 1)->get();
-      $data = MedicalClaimModel::where('status', 1)
+      $data = MedicalClaimModel::where('status', 1)->where('claim_status', 2)
          ->with('empdetails')
          ->get();
+      $approved = MedicalClaimModel::where('status', 1)->where('claim_status', 1)
+         ->with('empdetails')
+         ->get();
+      
          // print_r($data->toArray());die;
-      return view('employee/emp_medicalclaim', compact('data', 'Employees'));
+      return view('employee/emp_medicalclaim', compact('data', 'Employees','approved'));
    }
    public function unitDetailPage(Request $req)
    {
@@ -220,8 +240,12 @@ class HomeController extends Controller
       $Employees = User::where('status', 1)->get();
       $data = UnitDetail::where('status', 1)
          ->first();
+      $mdcl=MedicalClaimModel::where('status',1)->count();
+      $ltc=LtcClaim::where('status',1)->count();
+      $cea=EmployeeCeaRequest::where('status',1)->count();
          // print_r($data->toArray());die;
-      return view('employee/unit_detailing', compact('data', 'Employees'));
+      
+      return view('employee/unit_detailing', compact('data', 'Employees','mdcl','ltc','cea'));
    }
    public function pensionCreation(Request $req){
       $Employees = User::where('status', 1)->get();
@@ -252,11 +276,20 @@ class HomeController extends Controller
       // return view('employee/emp_othr_pension',compact('data'));
    }
    function mdcl_claim_doc(Request $req,$id=null){
+      // print_r($id);die;
+      
       $Employees = User::where('status', 1)->get();
       $data=[];
+      $requestData=[];
       if($id!=""){
+         $inputParams=explode('-',$id);
          // echo 'good to go';
-         $data = MedicalClaimModel::where('medical_claim_reques.status', 1)->where('medical_claim_reques.id',$id)
+         $data = MedicalClaimModel::where('medical_claim_reques.status', 1)->where('medical_claim_reques.id',$inputParams[0])
+                     // ->join('emp_dependant_details','emp_dependant_details.id','=','emp_cea_req.child_depnd_id')
+                     ->with('empdetails','emppfdetails','empbnkdetails','empunitdetails')->select('medical_claim_reques.*')
+                     ->get();
+         
+         $requestData=MedicalClaimModel::where('medical_claim_reques.status', 1)->where('medical_claim_reques.claim_status',2)->where('medical_claim_reques.emp_id',$inputParams[0])
                      // ->join('emp_dependant_details','emp_dependant_details.id','=','emp_cea_req.child_depnd_id')
                      ->with('empdetails','emppfdetails','empbnkdetails','empunitdetails')->select('medical_claim_reques.*')
                      ->get();
@@ -266,7 +299,7 @@ class HomeController extends Controller
       $unitDetails=UnitDetail::with('empdetails')->first();
       // print_r($unitDetails->toArray());/
          // die;
-      return view('employee/emp_mdcl_form',compact('data','unitDetails'));
+      return view('employee/emp_mdcl_form',compact('data','unitDetails','requestData'));
    }
 
    
@@ -423,9 +456,14 @@ class HomeController extends Controller
    public function generate_empsalslip(Request $req)
    {
 
-      $data = User::where('status', 1)->get();
-
-      return view('employee/emp_gensalslip', compact('data'));
+      $employee = User::where('status', 1)
+                     // ->where('attendace_date',)
+                     ->leftjoin('emp_salary_details','emp_salary_details.emp_id','=','users.emp_id')
+                     // ->leftjoin('emp_attendance','emp_attendance.emp_id','=','users.emp_id')
+                     ->select('emp_salary_details.*','users.*')
+                     ->get();
+      // print_r($employee->toArray());die;
+      return view('employee/em_salary', compact('employee'));
    }
    public function withdrwal_empgpf(Request $req)
    {
@@ -456,12 +494,79 @@ class HomeController extends Controller
       $jobDetails=EmployeeJobHistory::where('status',1)->where('emp_id',$id)->with('empdetails','incharge')->get();
       $pfDetails=PFAccount::where('status',1)->where('emp_id',$id)->with('empdetails','nomineeDetails')->get();
       $dependntDetails=DependentDetails::where('status',1)->where('emp_id',$id)->with('empdetails')->get();
-      $data = User::where('status', 1)->where('emp_id',$id)->first();
+      $data = User::where('status', 1)->where('emp_id',$id)->with('post')->first();
       $grade = GradeSalary::where('status', 1)->get();
+
+      // $empSalary = EmployeeSalary::where('salary_status', 1)->where('emp_id',$id)->get();
+
+      $deduction=EmpSalaryDeduction::where('emp_id',$id)->first();
+
       // print_r($data->toArray());die;
       $jsonFormat=json_encode(array('bankDetails'=>(array)$bankDetails,'skillDetails'=>(array)$skillDetails,'jobDetails'=>(array)$jobDetails,'pfDetails'=>(array)$pfDetails,'dependntDetails'=>(array)$dependntDetails));
-      return view('employee/emp_detailing', compact('grade','data','bankDetails','jobDetails','skillDetails','id','pfDetails','dependntDetails','jsonFormat'));
+      return view('employee/emp_detailing', compact('deduction','grade','data','bankDetails','jobDetails','skillDetails','id','pfDetails','dependntDetails','jsonFormat'));
    }
+
+
+   public function employeDetailsupdate(Request $req,$id)
+   {
+      // dd($req->id);
+      //dd($id);
+      //dd($req->all());
+         $data = User::find($id);
+        $data->name = $req->input('empName');
+        $data->email = $req->input('empEmail');
+        $data->dob = $req->input('empDob');
+        $data->do_joining = $req->input('empDoj');
+        $data->gender = $req->input('empGender');
+        $data->primary_mob = $req->input('empMobNo');
+        $data->grade = $req->input('empGrade');
+        $data->gpf_no = $req->input('empGpf');
+        $data->pay = $req->input('empPay');
+        $data->alternat_mob = $req->input('empAltNo');
+        $data->temp_address = $req->input('empTempAddress');
+        $data->perm_address = $req->input('empPerAddress');
+        $data->user_job_type = $req->input('empJob');
+        $data->mrg_status = $req->input('empMrgStatus');
+        $data->do_retirement = $req->input('empDort');
+
+        $data->doa = $req->input('empDoa');
+        $data->aadhar_no = $req->input('empAdhr');
+        $data->t_no = $req->input('emptNo');
+        $data->pan_no = $req->input('empPan');
+        $data->blood_group = $req->input('empBlood');
+        $data->religion = $req->input('empreli');
+        $data->add_cat = $req->input('empcat');
+        $data->pro_macp = $req->input('empPromo');
+        $data->tos = $req->input('empTos');
+        $data->cgh_ehs = $req->input('empchk');
+        $data->da_on_tpt = $req->input('empda');
+        $data->remark = $req->input('empRemark');
+        $data->el = $req->input('empEl');
+        $data->cl = $req->input('empCl');
+        $data->commmute_hpl = $req->input('empCommut');
+        $data->hpl = $req->input('empHpl');
+        $data->otl_comoff = $req->input('empOtl');
+        $data->eol_without = $req->input('empEol');
+        $data->ccl = $req->input('empCcl');
+        $data->paternity_lev = $req->input('empPatnity');
+        $data->maternity_lev = $req->input('empMaternity');
+        $data->eol_with_mc = $req->input('empEol');
+        $data->emp_type = $req->input('empType');
+        $data->pension_pln = $req->input('pensionPlan');
+       
+      
+        $data->update();
+        //dd($req->empId);
+         EmployeeSalary::where('emp_id',$req->empId)->update(['basic_pay' =>$req->input('empPay'),
+           'tpt' =>$req->input('empPayTpt'),
+           'pers_pay' =>$req->input('empPayPersPay'),
+           'govt_perks' =>$req->input('empPaygprk')
+      ]);
+        return redirect(route('employee-listing'));
+
+      
+   }
+
    public function EmployeeList(Request $req)
    {
 
@@ -716,7 +821,18 @@ class HomeController extends Controller
          if (count($res) > 0) {
             $response['message'] = 'Employee Deatils Already Exists';
          } elseif (count($res) == 0) {
-            $data = array(
+
+            // if($req->hasfile('image'))
+            // {
+            //     $file = $req->file('image');
+            //     $extenstion = $file->getClientOriginalExtension();
+            //     $filename = time().'.'.$extenstion;
+            //     $file->move('uploads/emp/', $filename);
+            //     $student->image = $filename;
+            // }
+               // $student->save();
+               $data = array(
+               
                'name' => $req->input('empName'),
                'email' => $req->input('empEmail'),
                'emp_id' => $req->input('empId'),
@@ -733,8 +849,33 @@ class HomeController extends Controller
                'pay' => $req->input('empPay'),
                'temp_address' => $req->input('empTempAddress'),
                'perm_address' => $req->input('empPerAddress'),
-               'user_job_type' => $req->input('empType'),
-               'mrg_status' => $req->input('empMrgStatus')
+               'user_job_type' => $req->input('jobType'),
+               'mrg_status' => $req->input('empMrgStatus'),
+// modifiy aditya
+                'emp_type' => $req->input('empType'),
+                'pension_pln' => $req->input('pensionPlan'),
+               'doa' => $req->input('doa'),
+               'aadhar_no' => $req->input('empAdhr'),
+               't_no' => $req->input('emptNo'),
+               'pan_no' => $req->input('empPan'),
+               'blood_group' => $req->input('empBlood'),
+               'religion' => $req->input('empreli'),
+               'add_cat' => $req->input('empcat'),
+               'pro_macp' => $req->input('empPromo'),
+               'tos' => $req->input('empTos'),
+               'cgh_ehs' => $req->input('empchk'),
+               'da_on_tpt' => $req->input('empda'),
+               'remark' => $req->input('empRemark'),
+               'el' => $req->input('empEl'),
+               'cl' => $req->input('empCl'),
+               'commmute_hpl' => $req->input('empCommut'),
+               'hpl' => $req->input('empHpl'),
+               'otl_comoff' => $req->input('empOtl'),
+               'eol_without' => $req->input('empEol'),
+               'ccl' => $req->input('empCcl'),
+               'paternity_lev' => $req->input('empPatnity'),
+               'maternity_lev' => $req->input('empMaternity'),
+               'eol_with_mc' => $req->input('empEol')
             );
             // print_r($data);die;/
             if (User::insert($data)) {
@@ -1200,18 +1341,6 @@ class HomeController extends Controller
    {
       // print_r($_POST);
       // die;
-//       Array
-// (
-//     [empId] => SME-101-1995
-//     [designation] => Software Developer
-//     [unitNo] => 212`
-//     [unitName] => MT Dehradun
-//     [unitIncharge] => Rk Subu Rav
-//     [job_status] => 0
-//     [unitIncharge] => 2020-01-06
-//     [to_prev] => 2023-01-06
-// )
-
       $response['status'] = false;
       $response['message'] = 'Something went wrong';
 
@@ -1257,5 +1386,233 @@ class HomeController extends Controller
       }
       return response($response)->header('Content-Type', 'application/json');
    }
+   
+   public function approveMedicalClaim(Request $req)
+   {
+
+      // print_r($_POST);die;
+
+      $response['status'] = false;
+      $response['message'] = 'Something went wrong';
+      if (!empty($req->input('clmReqId'))) {
+         $condition = array('id' => $req->input('clmReqId'));
+         $res = MedicalClaimModel::where($condition)->get();
+         if (count($res) > 0) {
+            if (MedicalClaimModel::where($condition)->update(['claim_status'=>1, "approved_amt"=> $req->input('approveamount')])) {
+               // Session::put('attendance',true);
+               $response['status'] = true;
+               $response['message'] = 'Claim Approved Successfully';
+               return ($response);
+            } else {
+               $response['message'] = 'Failed to Approve Claim';
+               return ($response);
+            }
+         } elseif (count($res) == 0) {
+            $response['message']="Request doesnot exists";
+            return response($response)->header('Content-Type', 'application/json');
+         }
+         return response($response)->header('Content-Type', 'application/json');
+      }
+      return response($response)->header('Content-Type', 'application/json');
+   }
+   
+   public function addEmpDeductions(Request $req)
+   {
+
+      $response['status'] = false;
+      $response['message'] = 'Something went wrong';
+      if (!empty($req->input('empId'))) {
+         $condition = array('emp_id' => $req->input('empId'));
+         $res = EmpSalaryDeduction::where($condition)->get();
+         if (count($res) > 0) {
+            // $response['message'] = 'Pension Request Already Exists';
+            //Update
+            $data = array(
+               'cghs' => $req->input('cghs'),
+               'cgeis' => $req->input('cgeis'),
+               'rent_rec' => $req->input('rent_Rec'),
+               'gpf_ref' => $req->input('gpf'),
+               'f_adv' => $req->input('f_adv'),
+               "misc"=>$req->input('misc'),
+               'tax_deduction' => $req->input('tax'),
+               'nps_deduction' => $req->input('nps'),
+            );
+            // print_r($data);die;/
+            if (EmpSalaryDeduction::where('emp_id',$req->input('empId'))->update($data)) {
+               // Session::put('attendance',true);
+               $response['status'] = true;
+               $response['message'] = 'Employee Salary Deduction Details Updated Successfully';
+               return ($response);
+            } else {
+               $response['message'] = 'Failed to Update Salary Deduction Details';
+               return ($response);
+            }
+         } else {
+            $data = array(
+               'emp_id' => $req->input('empId'),
+               'cghs' => $req->input('cghs'),
+               'cgeis' => $req->input('cgeis'),
+               'rent_rec' => $req->input('rent_Rec'),
+               'gpf_ref' => $req->input('gpf'),
+               'f_adv' => $req->input('f_adv'),
+               "misc"=>$req->input('misc'),
+               'tax_deduction' => $req->input('tax'),
+               'nps_deduction' => $req->input('nps')
+            );
+            // print_r($data);die;/
+            if (EmpSalaryDeduction::insert($data)) {
+               // Session::put('attendance',true);
+               $response['status'] = true;
+               $response['message'] = 'Employee Salary Deduction Added Successfully';
+               return ($response);
+            } else {
+               $response['message'] = 'Failed to Add  Salary Deduction Details';
+               return ($response);
+            }
+            return response($response)->header('Content-Type', 'application/json');
+         }  
+         return response($response)->header('Content-Type', 'application/json');
+      }
+      return response($response)->header('Content-Type', 'application/json');
+   }   
+   
+   public function addLeaveCategory(Request $req)
+   {
+
+      $response['status'] = false;
+      $response['message'] = 'Something went wrong';
+      if (!empty($req->input('category_name'))) {
+         $condition = array('category_name' => $req->input('category_name'));
+         $res = LeaveCategory::where($condition)->get();
+         if (count($res) > 0) {
+            // $response['message'] = 'Pension Request Already Exists';
+            //Update
+            $data = array(
+               'category_name' => $req->input('category_name'),
+               'days_count' => $req->input('days_count'),
+               'reserved_for' => $req->input('reserved_for'),
+              
+            );
+            // print_r($data);die;/
+            if (LeaveCategory::where('category_name',$req->input('category_name'))->update($data)) {
+               // Session::put('attendance',true);
+               $response['status'] = true;
+               $response['message'] = 'Leave Category Details Updated Successfully';
+               return ($response);
+            } else {
+               $response['message'] = 'Failed to Update Leave Category';
+               return ($response);
+            }
+         } else {
+            $data = array(
+               'category_name' => $req->input('category_name'),
+               'days_count' => $req->input('days_count'),
+               'reserved_for' => $req->input('reserved_for'),
+              
+            );
+            // print_r($data);die;/
+            if (LeaveCategory::insert($data)) {
+               // Session::put('attendance',true);
+               $response['status'] = true;
+               $response['message'] = 'Leave Category Added Successfully';
+               return ($response);
+            } else {
+               $response['message'] = 'Failed to Add Leave Category';
+               return ($response);
+            }
+            return response($response)->header('Content-Type', 'application/json');
+         }
+         return response($response)->header('Content-Type', 'application/json');
+      }
+      return response($response)->header('Content-Type', 'application/json');
+   }
+   public function addNewFinancialYear(Request $req)
+   {
+   $response['status'] = false;
+      $response['message'] = 'Something went wrong';
+      if (!empty($req->input('financial_year'))) {
+         $condition = array('financial_year' => $req->input('financial_year'));
+         $res = FinancialYear::where($condition)->get();
+         if (count($res) > 0) {
+            // $response['message'] = 'Pension Request Already Exists';
+            //Update
+            $data = array(
+               'financial_year' => $req->input('financial_year'),
+            );
+            // print_r($data);die;/
+            if (FinancialYear::where('financial_year',$req->input('financial_year'))->update($data)) {
+               // Session::put('attendance',true);
+               $response['status'] = true;
+               $response['message'] = 'Financial Year Updated Successfully';
+               return ($response);
+            } else {
+               $response['message'] = 'Failed to Update Financial Year';
+               return ($response);
+            }
+         } else {
+            $data = array(
+               'financial_year' => $req->input('financial_year')
+            );
+            // print_r($data);die;/
+            if (FinancialYear::insert($data)) {
+               // Session::put('attendance',true);
+               $response['status'] = true;
+               $response['message'] = 'Financial Year Added Successfully';
+               return ($response);
+            } else {
+               $response['message'] = 'Failed to Add Financial Year';
+               return ($response);
+            }
+            return response($response)->header('Content-Type', 'application/json');
+         }
+         return response($response)->header('Content-Type', 'application/json');
+      }
+      return response($response)->header('Content-Type', 'application/json');
+   }
+   public function generateSalary(Request $req){
+      $employee = User::where('status', 1)
+                     // ->where('attendace_date',)
+                     ->leftjoin('emp_salary_details','emp_salary_details.emp_id','=','users.emp_id')
+                     // ->leftjoin('emp_attendance','emp_attendance.emp_id','=','users.emp_id')
+                     ->select('emp_salary_details.*','users.*')
+                     ->get();
+      print_r($employee->toArray());die;
+   }
+   public function empdeduction(Request $req)
+   {
+      $data = RetirementRequestModel::where('status', 1)->get();
+       return view('employee/emp_deduction');
+   }
+   public function empdeductionpost(Request $req)
+   {
+      $post = new Empdeducation;
+      $post->Unit_id = $req->get('uid');
+      $post->gpf = $req->get('gpf');
+      $post->gpf_ref = $req->get('gpf_ref');
+      $post->eihs = $req->get('eihs');
+      $post->f_adv = $req->get('f_adv');
+      $post->rent_rec = $req->get('rent_rec');
+      $post->misc = $req->get('misc');
+      $post->tax = $req->get('tax');
+      $post->cghs = $req->get('cghs');
+      $post->save();
+      echo "Data Insert Sucessfully";
+      return redirect( route('empdeduction'));
+   }
+
+   public function empshowdata(Request $req)
+   {
+    //$data= User::where('status', 1)->with('promotion')->get();
+      $data = DB::table('users')
+      ->join('emp_salary_details', 'users.emp_id', '=', 'emp_salary_details.emp_id')
+      ->select('users.*', 'emp_salary_details.*')
+       ->get();
+       //dd($data);
+
+   
+    return view("employee.empalldatashow", compact('data'));
+
+   }
+   
 
 }

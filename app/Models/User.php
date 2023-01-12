@@ -37,4 +37,15 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function empSalarydetails(){
+        return $this->belongsTo('App\Models\EmployeeSalary', 'emp_id', 'emp_id')
+                    // ->where('status', 1)
+                    ->where('salary_status', 1)
+                    ->select('id','emp_id','basic_pay', 'ta_da', 'hra', 'tpt', 'pers_pay', 'govt_perks','salary_status');
+    }
+    public function post(){
+        return $this->hasOne('App\Models\EmployeeSalary', 'emp_id', 'emp_id');
+    }
+
 }

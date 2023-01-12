@@ -12,7 +12,7 @@
   sidebar small only desktop
 -----------------------------------*/
 
-@media (min-width: 1200px) {
+@media (min-width: 760px) {
     /*-- small sidebar --*/
     #sidebar.active {
         min-width: 90px;
@@ -36,7 +36,7 @@
         width: 100%;
         text-align: center;
         margin: 0 0 5px 0;
-        font-size: 24px;
+        font-size: 15px;
     }
     #sidebar.active ul ul a {
         padding: 10px !important;
@@ -217,19 +217,19 @@
     #sidebar.active+#content .topbar {
         padding-left: 0;
         min-width: 320px;
-        left: 250px;
+        left: 100px;
     }
     #content {
         padding: 60px 15px 25px 15px;
     }
     #sidebar.active {
-        min-width: 250px;
-        max-width: 250px;
+        /* min-width: 250px; */
+        /* max-width: 250px; */
         text-align: left;
     }
     #sidebar.active+#content {
         padding-left: 0;
-        left: 250px;
+        left: 100px;
         position: relative;
         min-width: 320px;
         height: auto;

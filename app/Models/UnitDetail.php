@@ -13,6 +13,6 @@ class UnitDetail extends Model
         // return $this->hasOne('App\Models\Manager\Employeedetails', 'id', 'emp_id');
         return $this->belongsTo('App\Models\User', 'unit_incharge_id', 'emp_id')
                     ->where('status', 1)
-                    ->select('id', 'name', 'emp_id','status');
+                    ->select('id', 'name', 'emp_id','status')->withDefault();
     }
 }

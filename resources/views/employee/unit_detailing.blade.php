@@ -18,7 +18,7 @@
                 <div class="col text-center">
                     <div class="card">
                         <div class="card-body">
-                            <label class="font-weigh-bold text-success">Total Employee: 12</label>
+                            <label class="font-weigh-bold text-success">Total Employee: {{count($Employees)}}</label>
                         </div>
                     </div>
                     
@@ -26,7 +26,7 @@
                 <div class="col text-center">
                     <div class="card">
                         <div class="card-body">
-                            <label class="font-weigh-bold text-primary">Total LTC Request: 2</label>
+                            <label class="font-weigh-bold text-primary">Total LTC Request: {{$ltc}}</label>
                         </div>
                     </div>
                     
@@ -34,7 +34,7 @@
                 <div class="col text-center">
                     <div class="card">
                         <div class="card-body">
-                            <label class="font-weigh-bold text-danger">Total Medical Request: 4</label>
+                            <label class="font-weigh-bold text-danger">Total Medical Request: {{$mdcl}}</label>
                         </div>
                     </div>
                     
@@ -42,7 +42,7 @@
                 <div class="col text-center">
                     <div class="card">
                         <div class="card-body">
-                            <label class="font-weigh-bold text-primary">Total CEA Request: 5</label>
+                            <label class="font-weigh-bold text-primary">Total CEA Request: {{$cea}}</label>
                         </div>
                     </div>
                     
@@ -52,7 +52,7 @@
                 <div class="col">
                     <div class="card">
                         <div class="card-body">
-                            <ul class="nav nav-tabs" role="tablist">
+                            <ul class="nav nav-tabs d-none" role="tablist">
                                 <li class="nav-item">
                                     <a class="nav-link active" data-toggle="tab" href="#basic_unitdetails" role="tab">Unit
                                         Details</a>
@@ -83,7 +83,7 @@
                                     <div class="card">
                                         <div class="card-body">
                                             <form id="add-new-unit-detail-form">
-                                                <div class="row">
+                                                <div class="row d-none">
                                                     <div class="col">
                                                         <label class="font-weight-bold">Add Unit Data</label>
                                                         <hr>
