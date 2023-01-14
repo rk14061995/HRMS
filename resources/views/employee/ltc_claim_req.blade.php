@@ -32,25 +32,29 @@
                         <div class="card-body">
                             <ul class="nav nav-tabs" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link active" data-toggle="tab" href="#apply_cea" role="tab">Fill and Print Documents</a>
+                                    <a class="nav-link active" data-toggle="tab" href="#form1" role="tab">form 1</a>
                                 </li>
-                                <li class="nav-item d-none">
-                                    <a class="nav-link" data-toggle="tab" href="#pend_cea_req" role="tab">CEA Pending
-                                        Requests</a>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#form2" role="tab"> form 2
+                            </a>
                                 </li>
-                                <li class="nav-item d-none">
-                                    <a class="nav-link" data-toggle="tab" href="#app_cea_req" role="tab">CEA Approved
-                                        Requests</a>
+                                <li class="nav-item ">
+                                    <a class="nav-link" data-toggle="tab" href="#form3" role="tab"> form 3</a>
                                 </li>
-                                <li class="nav-item d-none">
-                                    <a class="nav-link" data-toggle="tab" href="#rej_cea_req" role="tab">CEA Rejected
-                                        Requests</a>
+                                <li class="nav-item ">
+                                    <a class="nav-link" data-toggle="tab" href="#form4" role="tab"> form 4
+                                        </a>
                                 </li>
+                                <li class="nav-item ">
+                                    <a class="nav-link" data-toggle="tab" href="#form5" role="tab"> form 5
+                                        </a>
+                                </li>  
+                                                            
 
 
                             </ul><!-- Tab panes -->
                             <div class="tab-content">
-                                <div class="tab-pane active" id="apply_cea" role="tabpanel">
+                                <div class="tab-pane active" id="form1" role="tabpanel">
                                     <div class="card">
                                         <div class="card-body">
                                             {{-- Start  --}}
@@ -58,11 +62,11 @@
                                             <div class="container-fluid ">
                                                 <div class="row">
                                                     <div class="col tex-right">
-                                                        <a href="javascript:printDiv()" class="text-primary"><i
+                                                        <a href="javascript:printPdf('formone')" class="text-primary"><i
                                                                 class="fa fa-print" aria-hidden="true"></i> Print</a>
                                                     </div>
                                                 </div>
-                                                <div class="row" id="DivIdToPrint">
+                                                <div class="row" id="formone">
                                                     <div class="col">
                                                         <div class="row" >
                                                             <div class="col-md-2"></div>
@@ -200,17 +204,33 @@
                                                             </div>
                                                         </div>
                                                         <div class="pagebreak"> </div>
-                                                        <div class="row">
+                                                        
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="tab-pane " id="form2" role="tabpanel">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            {{-- Start  --}}
+
+                                            <div class="container-fluid ">
+                                                <div class="row">
+                                                    <div class="col tex-right">
+                                                        <a href="javascript:printPdf('formtwo')" class="text-primary"><i
+                                                                class="fa fa-print" aria-hidden="true"></i> Print</a>
+                                                    </div>
+                                                </div>
+                                                <div class="row" id="formtwo">
+                                                    <div class="col">
+                                                    <div class="row">
                                                             <div class="col-md-12 px-2 " id="">
-
-
-
-
-
-
-
-
-
                                                                 <div class="row mt-5">
                                                                     <div class="col text-center">
                                                                         <h4><b><u>LTC CLAIM FOR THE BLOCK YEAR <input type="text"  style="font-size:14px; width:50px" value="2020-2021"></u></b></h4>
@@ -507,7 +527,33 @@
                                                             </div>
                                                         </div>
                                                         <div class="pagebreak"> </div>
-                                                        <div class="row">
+                                                       
+                                                        
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="tab-pane " id="form3" role="tabpanel">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            {{-- Start  --}}
+
+                                            <div class="container-fluid ">
+                                                <div class="row">
+                                                    <div class="col tex-right">
+                                                        <a href="javascript:printPdf('formthree')" class="text-primary"><i
+                                                                class="fa fa-print" aria-hidden="true"></i> Print</a>
+                                                    </div>
+                                                </div>
+                                                <div class="row" id="formthree">
+                                                    <div class="col">
+                                                    <div class="row">
                                                             <div class="col-md-2"></div>
                                                             <div class="col-md-8 px-5 " id="">
 
@@ -542,7 +588,30 @@
                                                             </div>
                                                         </div>
                                                         <div class="pagebreak"> </div>
-                                                        <div class="row">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+<div class="tab-pane " id="form4" role="tabpanel">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            {{-- Start  --}}
+
+                                            <div class="container-fluid ">
+                                                <div class="row">
+                                                    <div class="col tex-right">
+                                                        <a href="javascript:printPdf('formfour')" class="text-primary"><i
+                                                                class="fa fa-print" aria-hidden="true"></i> Print</a>
+                                                    </div>
+                                                </div>
+                                                <div class="row" id="formfour">
+                                                    <div class="col">
+                                                    <div class="row">
                                                             <div class="col-md-2"></div>
                                                             <div class="col-md-8 px-5" id="">
 
@@ -620,7 +689,29 @@
                                                             </div>
                                                         </div>
                                                         <div class="pagebreak"> </div>
-                                                        <div class="row">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="tab-pane " id="form5" role="tabpanel">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            {{-- Start  --}}
+
+                                            <div class="container-fluid ">
+                                                <div class="row">
+                                                    <div class="col tex-right">
+                                                        <a href="javascript:printPdf('formfive')" class="text-primary"><i
+                                                                class="fa fa-print" aria-hidden="true"></i> Print</a>
+                                                    </div>
+                                                </div>
+                                                <div class="row" id="formfive">
+                                                    <div class="col">
+                                                    <div class="row">
                                                             <div class="col-md-2"></div>
                                                             <div class="col-md-8 px-2 " id="">
 
@@ -720,274 +811,7 @@
 
 
                                 </div>
-                                <div class="tab-pane " id="pend_cea_req" role="tabpanel">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <form id="add-emp-bank-details-form">
-
-                                                <div class="row">
-                                                    <div class="col">
-                                                        <label>Employee Id</label><br>
-                                                        <input type="text" class="form-control" name="empId"
-                                                            value="id" readonly>
-
-                                                    </div>
-                                                    <div class="col">
-                                                        <label>Acc Holder Name</label>
-                                                        <input type="text" name="accHolder" id="empAccHolder"
-                                                            class="form-control">
-                                                    </div>
-                                                    <div class="col">
-                                                        <label>Bank Name</label>
-                                                        <input type="text" name="bankName" id="empBankName"
-                                                            class="form-control">
-                                                    </div>
-                                                    <div class="col">
-                                                        <label>Account No.</label>
-                                                        <input type="text" name="accNo" id="empAccNo"
-                                                            class="form-control">
-                                                    </div>
-                                                    <div class="col">
-                                                        <label>IFSC</label>
-                                                        <input type="text" name="isfc" id="empIsfc"
-                                                            class="form-control">
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col">
-                                                        <hr>
-                                                        <button type="Submit" class="btn btn-success">Submit</button>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-
-                                    <div class="card mt-1">
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col">
-                                                    <label class="font-weight-bold">Employee Bank Details</label>
-                                                    <hr>
-                                                </div>
-                                            </div>
-
-                                            <div class="row mt-3">
-                                                <div class="col">
-                                                    <table class="table table-bordered myTable " id="jsTable">
-                                                        <thead>
-                                                            <th class="text-center">S.No</th>
-                                                            <th class="text-center">Bank Name</th>
-                                                            <th class="text-center">Account Holder</th>
-                                                            <th class="text-center">Account No.</th>
-                                                            <th class="text-center">ISFC</th>
-                                                            <th class="text-center">Action</th>
-                                                            {{-- <th>Designation</th>
-                                                                <th>Address</th> --}}
-                                                            {{-- <th>Mobile No.</th> --}}
-                                                        </thead>
-
-                                                        <tbody class="text-center">
-                                                            @php
-                                                                $i = 1;
-                                                            @endphp
-
-
-
-                                                        </tbody>
-
-
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                                <div class="tab-pane " id="rej_cea_req" role="tabpanel">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <form id="emp-skill-data">
-                                                <div class="row">
-                                                    <div class="col">
-                                                        <label class="font-weight-bold">Add Skill</label>
-                                                        <hr>
-                                                    </div>
-                                                </div>
-                                                <div class="row my-2">
-                                                    <div class="col">
-                                                        <label class="font-weight-bold">Employee Id</label>
-                                                        <input type="text" class="form-control" name="empId"
-                                                            value="id" readonly>
-                                                    </div>
-                                                    <div class="col">
-                                                        <label class="font-weight-bold">Primary Technology Vertical</label>
-                                                        <input type="text" name="empPrmySkill" class="form-control">
-                                                    </div>
-                                                    <div class="col">
-                                                        <label class="font-weight-bold">Secondary Technology
-                                                            Vertical</label>
-                                                        <input type="text" name="empScndSkill" class="form-control">
-                                                    </div>
-
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col">
-                                                        <hr>
-                                                        <input type="submit" class="btn btn-success" value="Add Skill">
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <table class="table table-bordered myTable ">
-                                                <thead>
-                                                    <th class="text-center">S.No</th>
-                                                    <th class="text-center">Primary Skill</th>
-                                                    <th class="text-center">Secondary Skill</th>
-                                                    <th class="text-center">Action</th>
-                                                </thead>
-
-                                                <tbody class="text-center">
-                                                    @php
-                                                        $i = 1;
-                                                    @endphp
-
-
-                                                </tbody>
-
-
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="tab-pane " id="emp_job_history" role="tabpanel">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <form id="add-emp-job-details-form">
-
-                                                <div class="row">
-                                                    <div class="col">
-                                                        <label>Employee Id</label><br>
-                                                        <input type="text" class="form-control" name="empId"
-                                                            value="id" readonly>
-
-                                                    </div>
-
-                                                    <div class="col">
-                                                        <label>Unit No.</label>
-                                                        <input type="text" name="accNo" id="empAccNo"
-                                                            class="form-control">
-                                                    </div>
-                                                    <div class="col">
-                                                        <label>Nominee</label>
-                                                        <input type="text" name="accNo" id="empAccNo"
-                                                            class="form-control">
-                                                    </div>
-
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col">
-                                                        <hr>
-                                                        <button type="Submit" class="btn btn-success">Submit</button>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <table class="table table-bordered myTable ">
-                                                <thead>
-                                                    <th class="text-center">S.No</th>
-                                                    <th class="text-center">Emp ID</th>
-                                                    <th class="text-center">Emp Name</th>
-                                                    <th class="text-center">Designation</th>
-                                                    <th class="text-center">Unit No</th>
-                                                    <th class="text-center">Unit name</th>
-                                                    <th class="text-center">Unit Incharge</th>
-                                                    <th class="text-center">Job Status</th>
-                                                    <th class="text-center">Action</th>
-                                                </thead>
-
-                                                <tbody class="text-center">
-                                                    @php
-                                                        $i = 1;
-                                                    @endphp
-
-
-                                                </tbody>
-
-
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="tab-pane " id="app_cea_req" role="tabpanel">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <form id="add-emp-pf-details-form">
-
-                                                <div class="row">
-                                                    <div class="col">
-                                                        <label>Employee Id</label><br>
-                                                        <input type="text" class="form-control" name="empId"
-                                                            value="id" readonly>
-
-                                                    </div>
-
-                                                    <div class="col">
-                                                        <label>Account No.</label>
-                                                        <input type="text" name="accNo" class="form-control">
-                                                    </div>
-                                                    <div class="col">
-                                                        <label>Nominee</label>
-                                                        <select class="form-control" name="nominee">
-                                                            <option value="0">Select</option>
-
-                                                        </select>
-
-                                                    </div>
-
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col">
-                                                        <hr>
-                                                        <button type="Submit" class="btn btn-success">Submit</button>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <table class="table table-bordered myTable ">
-                                                <thead>
-                                                    <th class="text-center">S.No</th>
-                                                    <th class="text-center">Account</th>
-                                                    <th class="text-center">Nominee</th>
-
-                                                    <th class="text-center">Action</th>
-                                                </thead>
-
-                                                <tbody class="text-center">
-                                                    @php
-                                                        $i = 1;
-                                                    @endphp
-
-
-                                                </tbody>
-
-
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-
-
+                                                        <div class="pagebreak"> </div>
                             </div>
                         </div>
                     </div>
@@ -996,5 +820,6 @@
 
 
         </div>
+        
     </div>
 @endsection
