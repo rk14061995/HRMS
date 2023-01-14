@@ -1168,6 +1168,13 @@ var selDiv = "";
           readers.readAsDataURL(f);
         });
       }
+
+      $(function() {
+          mark_empAttnDate.max = new Date().toISOString().split("T")[0];
+    });
+      $(function() {
+        mark_checkOutAttnd.max = new Date().toISOString().split("T")[0];
+    });
     
 
 

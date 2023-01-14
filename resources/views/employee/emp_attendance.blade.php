@@ -46,7 +46,7 @@
                                                 </select>
                                             </div>
                                             <div class="col">
-                                                <input type="date" name="date" value="{{ date('m/d/Y') }}"
+                                                <input type="date" name="date" id="mark_empAttnDate" 
                                                     class="form-control">
                                             </div>
                                             <div class="col">
@@ -79,8 +79,9 @@
                                                 </select>
                                             </div>
                                             <div class="col">
-                                                <input type="date" name="date" value="{{ date('m/d/Y') }}"
+                                                <input type="date" name="date" id="mark_checkOutAttnd"
                                                     class="form-control">
+                                                    
                                             </div>
                                             <div class="col">
                                                 {{-- <label>Time</label> --}}

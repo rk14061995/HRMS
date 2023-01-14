@@ -32,25 +32,33 @@
                         <div class="card-body">
                             <ul class="nav nav-tabs" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link active" data-toggle="tab" href="#apply_cea" role="tab">Fill and Print Documents</a>
+                                    <a class="nav-link active" data-toggle="tab" href="#children_reimburse" role="tab">Children Reimbursement</a>
                                 </li>
-                                <li class="nav-item d-none">
-                                    <a class="nav-link" data-toggle="tab" href="#pend_cea_req" role="tab">CEA Pending
-                                        Requests</a>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#self_declaration" role="tab"> Self Declaration
+                                        </a>
                                 </li>
-                                <li class="nav-item d-none">
-                                    <a class="nav-link" data-toggle="tab" href="#app_cea_req" role="tab">CEA Approved
-                                        Requests</a>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#cea_remburse" role="tab">CEA Reimbursement
+                                        </a>
                                 </li>
-                                <li class="nav-item d-none">
-                                    <a class="nav-link" data-toggle="tab" href="#rej_cea_req" role="tab">CEA Rejected
-                                        Requests</a>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#certificate_child" role="tab">Child Certificate
+                                        </a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#supplementary_bill" role="tab">Supplementary Bill
+                                        </a>
+                                </li>
+                                <!-- <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#supplementary_bill" role="tab">
+                                        </a>
+                                </li> -->
 
 
                             </ul><!-- Tab panes -->
                             <div class="tab-content">
-                                <div class="tab-pane active" id="apply_cea" role="tabpanel">
+                                <div class="tab-pane active" id="children_reimburse" role="tabpanel">
                                     <div class="card">
                                         <div class="card-body">
                                             {{-- Start  --}}
@@ -58,11 +66,11 @@
                                             <div class="container-fluid ">
                                                 <div class="row">
                                                     <div class="col tex-right">
-                                                        <a href="javascript:printDiv()" class="text-primary"><i
+                                                        <a href="javascript:printPdf('child_reimburse')" class="text-primary"><i
                                                                 class="fa fa-print" aria-hidden="true"></i> Print</a>
                                                     </div>
                                                 </div>
-                                                <div class="row" id="DivIdToPrint">
+                                                <div class="row" id="child_reimburse">
                                                     <div class="col">
                                                         <div class="row" >
                                                             <div class="col-md-2"></div>
@@ -422,8 +430,43 @@
 
                                                             </div>
                                                         </div>
-                                                        <div class="pagebreak"> </div>
-                                                        <div class="row">
+                                                        
+                                                    </div>
+
+
+
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    
+
+
+                                                </div>
+                                                
+
+                                            </div>
+                                            {{-- Ends --}}
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <div class="tab-pane " id="self_declaration" role="tabpanel">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            {{-- Start  --}}
+
+                                            <div class="container-fluid ">
+                                                <div class="row">
+                                                    <div class="col tex-right">
+                                                        <a href="javascript:printPdf('self_dec')" class="text-primary"><i
+                                                                class="fa fa-print" aria-hidden="true"></i> Print</a>
+                                                    </div>
+                                                </div>
+                                                <div class="row" id="self_dec">
+                                                    <div class="col">
+                                                    <div class="row">
                                                             <div class="col-md-2"></div>
                                                             <div class="col-md-8  px-2 " id="">
 
@@ -617,8 +660,44 @@
         
                                                             </div>
                                                         </div>
-                                                        <div class="pagebreak"> </div>
-                                                        <div class="row">
+                                                        
+                                                    </div>
+
+
+
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    
+
+
+                                                </div>
+                                                
+
+                                            </div>
+                                            {{-- Ends --}}
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <div class="tab-pane " id="cea_remburse" role="tabpanel">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            {{-- Start  --}}
+
+                                            <div class="container-fluid ">
+                                                <div class="row">
+                                                    <div class="col tex-right">
+                                                        <a href="javascript:printPdf('reimburse_cea')" class="text-primary"><i
+                                                                class="fa fa-print" aria-hidden="true"></i> Print</a>
+                                                    </div>
+                                                </div>
+                                                <div class="row" id="self_dec">
+                                                    <div class="col">
+                                                    
+                                                    <div class="row">
                                                             <div class="col-md-2"></div>
                                                             <div class="col-md-8  px-2 " id="">
 
@@ -696,8 +775,42 @@
         
                                                             </div>
                                                         </div>
-                                                        <div class="pagebreak"> </div>
-                                                        <div class="row">
+                                                    </div>
+
+
+
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    
+
+
+                                                </div>
+                                                
+
+                                            </div>
+                                            {{-- Ends --}}
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <div class="tab-pane " id="certificate_child" role="tabpanel">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            {{-- Start  --}}
+
+                                            <div class="container-fluid ">
+                                                <div class="row">
+                                                    <div class="col tex-right">
+                                                        <a href="javascript:printPdf('child_certificate')" class="text-primary"><i
+                                                                class="fa fa-print" aria-hidden="true"></i> Print</a>
+                                                    </div>
+                                                </div>
+                                                <div class="row" id="child_certificate">
+                                                    <div class="col">
+                                                    <div class="row">
                                                             <div class="col-md-2"></div>
                                                             <div class="col-md-8  px-2 " id="">
                                                                 <div class="row">
@@ -763,8 +876,43 @@
           
                                                               </div>
                                                         </div>
-                                                        <div class="pagebreak"> </div>
-                                                        <div class="row">
+                                                        
+                                                    </div>
+
+
+
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    
+
+
+                                                </div>
+                                                
+
+                                            </div>
+                                            {{-- Ends --}}
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <div class="tab-pane " id="supplementary_bill" role="tabpanel">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            {{-- Start  --}}
+
+                                            <div class="container-fluid ">
+                                                <div class="row">
+                                                    <div class="col tex-right">
+                                                        <a href="javascript:printPdf('supp_bill')" class="text-primary"><i
+                                                                class="fa fa-print" aria-hidden="true"></i> Print</a>
+                                                    </div>
+                                                </div>
+                                                <div class="row" id="supp_bill">
+                                                    <div class="col">
+                                                    <div class="row">
                                                             <div class="col-md-2"></div>
                                                             <div class="col-md-8  px-2" id="">
                                                                 <div class="row">
@@ -845,6 +993,7 @@
           
                                                             </div>
                                                         </div>
+                                                        
                                                     </div>
 
 
@@ -866,6 +1015,7 @@
 
 
                                 </div>
+                                
                                 <div class="tab-pane " id="pend_cea_req" role="tabpanel">
                                     <div class="card">
                                         <div class="card-body">
